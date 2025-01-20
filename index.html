@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="dialog">
+    <h3>Unit Converter</h3>
+    <label for="inputValue">Enter value and unit (e.g., '5 cm'):</label>
+    <input type="text" id="inputValue" placeholder="e.g., 5 cm">
+    <button onclick="convertInput()">Convert</button>
+    <div class="message-box" id="resultMessage"></div>
+</div>
+
+<script>
+    function convertInput() {
+        let input = document.getElementById("inputValue").value.trim();
+        let resultMessage = document.getElementById("resultMessage");
+
+        // Clear previous message
+        resultMessage.innerHTML = '';
+        resultMessage.classList.remove('error', 'success');
+
+        // Check if input is empty
+        if (input === "") {
+            resultMessage.innerHTML = "<strong>Error:</strong> You must enter a value and unit to proceed.";
+            resultMessage.classList.add('error');
+            return;
+        }
+
+        // Split the input into value and unit
+        let parts = input.split(" ");
+        if (parts.length < 2) {
+            resultMessage.innerHTML = "<strong>Error:</strong> Invalid input. Please enter both value and unit (e.g., '5 cm').";
+            resultMessage.classList.add('error');
+            return;
+        }
+
+        let value = parseFloat(parts[0]);
+        let unit = parts[1].toLowerCase();
+
+        // Validate that the value is a number
+        if (isNaN(value)) {
+            resultMessage.innerHTML = "<strong>Error:</strong> The value must be a number.";
+            resultMessage.classList.add('error');
+            return;
+        }
+
+        // Perform the conversion based on the unit
+        let convertedValue, result;
+        switch (unit) {
+            case "cm":
+                convertedValue = value * 0.03571428571428571;
+                result = `${value} cm is equal to ${convertedValue.toFixed(3)} studs.`;
+                break;
+            case "m":
+                convertedValue = value * 0.03571428571428571 * 100;
+                result = `${value} meters is equal to ${convertedValue.toFixed(3)} studs.`;
+                break;
+            case "in":
+                convertedValue = value * 0.03571428571428571 * 2.54;
+                result = `${value} inches is equal to ${convertedValue.toFixed(3)} studs.`;
+                break;
+            case "ft":
+                convertedValue = value * 0.03571428571428571 * 12;
+                result = `${value} feet is equal to ${convertedValue.toFixed(3)} studs.`;
+                break;
+            case "studs":
+                result = `${value} studs is equal to ${value} studs.`;
+                break;
+            default:
+                resultMessage.innerHTML = "<strong>Error:</strong> Invalid unit entered. Please use cm, m, in, ft, or studs.";
+                resultMessage.classList.add('error');
+                return;
+        }
+
+        // Show the result
+        resultMessage.innerHTML = `<strong>Result:</strong> ${result}`;
+        resultMessage.classList.add('success');
+    }
+</script>
+
+</body>
+</html>
